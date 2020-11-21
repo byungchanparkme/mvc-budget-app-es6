@@ -56,16 +56,6 @@ class View {
             this._hide([this.expenseEl, this.incomeEl])
           }
         })
-      } else if (event === "clearInputs") {
-        if (this.expenseBtn.classList.contains("active")) {
-          this.expenseTitle.value = ""
-          this.expenseAmount.value = ""
-          this.expenseTitle.focus()
-        } else if (this.incomeBtn.classList.contains("active")) {
-          this.incomeTitle.value = ""
-          this.incomeAmount.value = ""
-          this.incomeTitle.focus()
-        }
       }
     }
   }
@@ -79,6 +69,9 @@ class View {
         // this._addItem(data)
       },
       addIncomeItem: () => {},
+      clearInputs: () => {
+        this._clearInputs()
+      },
     }
     viewCommands[viewCmd]()
   }
@@ -96,6 +89,9 @@ class View {
     elements.forEach((element) => element.classList.remove("active"))
   }
   _showEntries(data) {
+    this.expenseList.innerHTML = ""
+    this.incomeList.innerHTML = ""
+    this.allList.innerHTML = ""
     const entryDomList = this.template.insert(data)
     for (let i = 0; i < entryDomList.length; i++) {
       if (entryDomList[i].indexOf("expense") > -1) {
@@ -106,13 +102,17 @@ class View {
       this.allList.innerHTML += entryDomList[i]
     }
   }
-  // _addItem(data) {
-  //   // data.type, data.title, data.amount
-  //   if (data.type === "expense") {
-  //     this.template.push(data)
-  //   } else if (data.type === "income") {
-  //   }
-  // }
+  _clearInputs() {
+    if (this.expenseBtn.classList.contains("active")) {
+      this.expenseTitle.value = ""
+      this.expenseAmount.value = ""
+      this.expenseTitle.focus()
+    } else if (this.incomeBtn.classList.contains("active")) {
+      this.incomeTitle.value = ""
+      this.incomeAmount.value = ""
+      this.incomeTitle.focus()
+    }
+  }
 }
 
 export default View

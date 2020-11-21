@@ -6,17 +6,10 @@ class Controller {
     this.showEntries()
     this.view.bind("moveToOtherTab")
     this.view.bind("addExpenseItem", (data) => {
-      this.model.create(data, (data) => {
-        console.log(data)
-        this.view.render("addExpenseItem", data)
-      })
-      this.view.bind("clearInputs")
+      this.addExpenseItem(data)
     })
     this.view.bind("addIncomeItem", (data) => {
-      this.model.create(data, (data) => {
-        this.view.render("addIncomeItem", data)
-      })
-      this.view.bind("clearInputs")
+      this.addIncomeItem(data)
     })
   }
 
@@ -24,6 +17,20 @@ class Controller {
     this.model.read((data) => {
       this.view.render("showEntries", data)
     })
+  }
+
+  addExpenseItem(data) {
+    this.model.create(data, (data) => {
+      this.view.render("clearInputs", data)
+    })
+    this.showEntries()
+  }
+
+  addIncomeItem(data) {
+    this.model.create(data, (data) => {
+      this.view.render("clearInputs", data)
+    })
+    this.showEntries()
   }
 }
 
