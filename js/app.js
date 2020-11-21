@@ -1,8 +1,8 @@
-import Model from "./model"
-import View from "./voew"
-import Controller from "./controller"
-import Storage from "./storage"
-import Template from "./template"
+import Model from "./model.js"
+import View from "./view.js"
+import Controller from "./controller.js"
+import Storage from "./storage.js"
+import Template from "./template.js"
 
 class App {
   constructor() {

@@ -3,6 +3,7 @@ class Controller {
     this.model = model
     this.view = view
 
+    this.view.bind("moveToOtherTab")
   }
 }
 

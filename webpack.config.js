@@ -24,7 +24,8 @@ module.exports = {
     inline: true,
     hot: true,
     host: "localhost",
-    part: 5500,
+    port: 5500,
     open: true,
+    clientLogLevel: "warm",
   },
 }
