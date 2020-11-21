@@ -15,6 +15,9 @@ class View {
     this.addIncomeBtn = document.querySelector(".add-income")
     this.incomeTitle = document.getElementById("income-title-input")
     this.incomeAmount = document.getElementById("income-amount-input")
+    this.incomeList = document.querySelector("#income .list")
+    this.expenseList = document.querySelector("#expense .list")
+    this.allList = document.querySelector("#all .list")
   }
 
   bind(event, handler) {
@@ -93,7 +96,15 @@ class View {
     elements.forEach((element) => element.classList.remove("active"))
   }
   _showEntries(data) {
-    console.log(this.template.insert(data))
+    const entryDomList = this.template.insert(data)
+    for (let i = 0; i < entryDomList.length; i++) {
+      if (entryDomList[i].indexOf("expense") > -1) {
+        this.expenseList.innerHTML += entryDomList[i]
+      } else if (entryDomList[i].indexOf("income") > -1) {
+        this.incomeList.innerHTML += entryDomList[i]
+      }
+      this.allList.innerHTML += entryDomList[i]
+    }
   }
   // _addItem(data) {
   //   // data.type, data.title, data.amount
