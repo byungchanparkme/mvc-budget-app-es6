@@ -10,6 +10,10 @@ class Model {
   create(data, callback) {
     this.storage.save(data, callback)
   }
+
+  update(data, callback) {
+    this.storage.find(data, callback)
+  }
 }
 
 export default Model

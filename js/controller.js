@@ -11,6 +11,9 @@ class Controller {
     this.view.bind("addIncomeItem", (data) => {
       this.addIncomeItem(data)
     })
+    this.view.bind("deleteItem", (data) => {
+      this.deleteItem(data)
+    })
   }
 
   showEntries() {
@@ -31,6 +34,13 @@ class Controller {
       this.view.render("clearInputs", data)
     })
     this.showEntries()
+  }
+
+  deleteItem(data) {
+    this.model.update(data, (data) => {
+      console.log(data)
+      this.view.render("deleteItem", data)
+    })
   }
 }
 

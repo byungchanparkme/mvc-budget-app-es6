@@ -25,6 +25,16 @@ class Storage {
     const entries = currentData.entries
     callback.call(this, entries)
   }
+
+  find(data, callback) {
+    const currentData = JSON.parse(localStorage.getItem(this._dbName))
+    const entries = currentData.entries
+    const targetId = data.id
+    const targetItem = entries.splice(targetId, 1)[0]
+    console.log(targetItem)
+    localStorage.setItem(this._dbName, JSON.stringify(currentData))
+    callback.call(this, { ...targetItem, id: targetId })
+  }
 }
 
 export default Storage

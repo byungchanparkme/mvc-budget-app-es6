@@ -18,6 +18,7 @@ class View {
     this.incomeList = document.querySelector("#income .list")
     this.expenseList = document.querySelector("#expense .list")
     this.allList = document.querySelector("#all .list")
+    this.dashBoard = document.querySelector(".budget-dashboard")
   }
 
   bind(event, handler) {
@@ -33,6 +34,29 @@ class View {
           const title = this.incomeTitle.value
           const amount = this.incomeAmount.value
           handler({ type: "income", title: title, amount: amount })
+        })
+      } else if (event === "deleteItem") {
+        this.dashBoard.addEventListener("click", () => {
+          const listContainerList = [this.expenseEl, this.incomeEl, this.allEl]
+          listContainerList.forEach((listContainer) => {
+            if (!listContainer.classList.contains("hide")) {
+              const list = listContainer.children[0]
+              console.log(list)
+              list.addEventListener(
+                "click",
+                (event) => {
+                  const target = event.target
+                  if (target.id === "delete") {
+                    console.log("clicked")
+                    const targetId = parseInt(target.parentElement.id, 10)
+                    handler({ id: targetId })
+                  }
+                },
+                { once: true }
+              )
+              return
+            }
+          })
         })
       }
     } else {
@@ -71,6 +95,9 @@ class View {
       addIncomeItem: () => {},
       clearInputs: () => {
         this._clearInputs()
+      },
+      deleteItem: () => {
+        this._deleteItem(data)
       },
     }
     viewCommands[viewCmd]()
@@ -112,6 +139,29 @@ class View {
       this.incomeAmount.value = ""
       this.incomeTitle.focus()
     }
+  }
+  _deleteItem(data) {
+    let targetItem = data.type === "expense" ? this._findTargetItem(this.expenseList.children, data) : this._findTargetItem(this.incomeList.children, data)
+    let targetItemOnAll = this._findTargetItem(this.allList.children, data)
+
+    this.allList.removeChild(targetItemOnAll)
+    if (targetItem.className === "expense") {
+      this.expenseList.removeChild(targetItem)
+    } else if (targetItem.className === "income") {
+      this.incomeList.removeChild(targetItem)
+    }
+  }
+  _findTargetItem(elemList, data) {
+    const children = Array.from(elemList)
+    let targetItem
+    children.forEach((child) => {
+      for (let p in data) {
+        if (data[p] == child[p]) {
+          targetItem = child
+        }
+      }
+    })
+    return targetItem
   }
 }
 
