@@ -31,9 +31,8 @@ class Storage {
     const entries = currentData.entries
     const targetId = data.id
     const targetItem = entries.splice(targetId, 1)[0]
-    console.log(targetItem)
     localStorage.setItem(this._dbName, JSON.stringify(currentData))
-    callback.call(this, { ...targetItem, id: targetId })
+    callback.call(this, entries, { ...targetItem, id: targetId })
   }
 }
 

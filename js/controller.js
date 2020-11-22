@@ -19,6 +19,8 @@ class Controller {
   showEntries() {
     this.model.read((data) => {
       this.view.render("showEntries", data)
+      // 여기서 Balance, Income, Outcome 값 렌더링 필요하다.
+      this.view.render("showCurrentStatus", data)
     })
   }
 
@@ -37,9 +39,9 @@ class Controller {
   }
 
   deleteItem(data) {
-    this.model.update(data, (data) => {
-      console.log(data)
-      this.view.render("deleteItem", data)
+    this.model.update(data, (entries, targetItem) => {
+      this.view.render("deleteItem", targetItem)
+      this.view.render("showCurrentStatus", entries)
     })
   }
 }

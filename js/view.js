@@ -2,6 +2,9 @@ class View {
   constructor(template) {
     this.template = template
 
+    this.balanceEl = document.querySelector(".balance .value")
+    this.incomeTotalEl = document.querySelector(".income-total")
+    this.outcomeTotalEl = document.querySelector(".outcome-total")
     this.expenseBtn = document.querySelector(".tab1")
     this.incomeBtn = document.querySelector(".tab2")
     this.allBtn = document.querySelector(".tab3")
@@ -41,19 +44,14 @@ class View {
           listContainerList.forEach((listContainer) => {
             if (!listContainer.classList.contains("hide")) {
               const list = listContainer.children[0]
-              console.log(list)
-              list.addEventListener(
-                "click",
-                (event) => {
-                  const target = event.target
-                  if (target.id === "delete") {
-                    console.log("clicked")
-                    const targetId = parseInt(target.parentElement.id, 10)
-                    handler({ id: targetId })
-                  }
-                },
-                { once: true }
-              )
+              list.addEventListener("click", (event) => {
+                const target = event.target
+                if (target.id === "delete") {
+                  console.log("deleted")
+                  const targetId = parseInt(target.parentElement.id, 10)
+                  handler({ id: targetId })
+                }
+              })
               return
             }
           })
@@ -89,10 +87,9 @@ class View {
       showEntries: () => {
         this._showEntries(data)
       },
-      addExpenseItem: () => {
-        // this._addItem(data)
+      showCurrentStatus: () => {
+        this._showCurrentStatus(data)
       },
-      addIncomeItem: () => {},
       clearInputs: () => {
         this._clearInputs()
       },
@@ -129,6 +126,21 @@ class View {
       this.allList.innerHTML += entryDomList[i]
     }
   }
+
+  _showCurrentStatus(data) {
+    // 먼저 income 과 outcome 계산
+    const outcome = data.filter((item) => item.type === "expense")
+    const income = data.filter((item) => item.type === "income")
+
+    const outcomeTotal = this._calculateTotal(outcome)
+    const incomeTotal = this._calculateTotal(income)
+    const balance = this._calculateBalance(outcomeTotal, incomeTotal)
+
+    this.balanceEl.textContent = balance < 0 ? `-$${-balance}` : `$${balance}`
+    this.outcomeTotalEl.textContent = `$${outcomeTotal}`
+    this.incomeTotalEl.textContent = `$${incomeTotal}`
+  }
+
   _clearInputs() {
     if (this.expenseBtn.classList.contains("active")) {
       this.expenseTitle.value = ""
@@ -152,6 +164,8 @@ class View {
     }
   }
   _findTargetItem(elemList, data) {
+    console.log("elemList : ", elemList)
+    console.log("data : ", data)
     const children = Array.from(elemList)
     let targetItem
     children.forEach((child) => {
@@ -162,6 +176,14 @@ class View {
       }
     })
     return targetItem
+  }
+
+  _calculateTotal(amounts) {
+    if (!amounts.length) return 0
+    return amounts.reduce((a, b) => a + Number(b.amount), 0)
+  }
+  _calculateBalance(outcome, income) {
+    return income - outcome
   }
 }
 
