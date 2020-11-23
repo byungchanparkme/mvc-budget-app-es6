@@ -1,21 +1,20 @@
 # Budget-App-JavaScript
 
-​ @Code Explained  Says Hi
+### ​프로젝트 목적
 
-Today's project is the " Budget App" with vanilla JavaScript.
+- MVC 패턴을 적용
+- 차트 적용(데이터의 변화 여부를 한 눈에 파악할 수 있게 하기 위함.)
+- ES6 문법 적용(생성자 함수를 사용하지 않고 클래스 문법 사용, import, export를 활용한 모듈 시스템)
 
-In this tutorial, a JavaScript beginner can be able to create a beautiful and functional budget app using JavaScript.
-I will talk about the logic behind every line of code, before opening my text editor and start typing the code.
-it's a step by step tutorial, you won't get lost at any stage of this tutorial.
+### 구현 기능
 
-Our app shows, the balance, the income and the outcome. it also has a dashboard where the user can add a new entry (an income or an expense), he can toggle between the income list (that show only all income entries) and the expenses list (that shows only the outcome entries) and all list that shows all the entries.
-The user can edit or delete an entry.
-Our app has a chart, so the user can easily compare the income and outcome.
-
-The user's income and expense entry list is stored in the local storage, so when he refreshes the page, or reboot his machine, he can always find  his data there.
-
-to follow the tutorial step by step, when we get to the second part (when we type the code), you'll need to download the starter template.
-
-And then you can follow the tutorial on Youtube: https://youtu.be/SQbCwfGC7EM
-
-When you open the folder, you'll find all the files needed to get started, the CSS code is already typed (see style.css file), as we're not going to talk about CSS in our tutorial. we're going just to talk about HTML and JavaScript.
+- 수입 항목 작성하기
+- 지출 항목 작성하기
+- 수입 항목 한 눈에 보여주기
+- 지출 항목 한 눈에 보여주기
+- 수입 항목 + 지출 항목 한 눈에 보여주기
+- 상황판에서 지출, 수입, 그리고 현재 나의 자산 보여주기
+- 데이터베이스 대신 로컬스토리지에 데이터를 저장하여 리로딩되더라도 현재 상태 유지하기
+- 데이터 삭제 기능
+- 데이터 수정 기능
+- 상황판의 가운데에 차트 보여주기(지출과 수입의 비율에 따라 달라짐.)
