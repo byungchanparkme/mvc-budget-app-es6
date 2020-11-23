@@ -24,3 +24,10 @@
 
 ### 참고
 https://www.youtube.com/watch?v=SQbCwfGC7EM : 해당 튜토리얼의 HTML, CSS 코드를 참고하였습니다.
+
+### 실행 안내
+
+1. git clone https://github.com/byungchanparkme/mvc-budget-app-es6 : 프로젝트의 리포지토리에 저장되어 있는 모든 파일들을 내려받아옵니다. 
+2. npm install : package.json에 기록되어 있는 라이브러리들을 설치해줍니다.
+3. npm run dev : 서버를 구동시켜서 프로젝트가 어떤 식으로 동작하는지 살펴볼 수 있습니다. 
+4. npm run build : 프로젝트에 쓰이는 모든 js 파일들을 번들화시켜서 하나의 빌드된 파일로 만들어줍니다.
