@@ -14,6 +14,9 @@ class Controller {
     this.view.bind("deleteItem", (data) => {
       this.deleteItem(data)
     })
+    this.view.bind("editItem", (data) => {
+      this.editItem(data)
+    })
   }
 
   showEntries() {
@@ -39,9 +42,16 @@ class Controller {
   }
 
   deleteItem(data) {
-    this.model.update(data, (entries, targetItem) => {
+    this.model.update(data, (targetItem, entries) => {
+      console.log(entries)
       this.view.render("deleteItem", targetItem)
       this.view.render("showCurrentStatus", entries)
+    })
+  }
+
+  editItem(data) {
+    this.model.read(data, (targetItem) => {
+      this.view.render("editItem", targetItem)
     })
   }
 }

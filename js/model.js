@@ -3,8 +3,16 @@ class Model {
     this.storage = storage
   }
 
-  read(callback) {
-    this.storage.findAll(callback)
+  read(data, callback) {
+    const dataType = typeof data
+    callback = callback || function () {}
+
+    if (dataType === "function") {
+      callback = data
+      return this.storage.findAll(callback)
+    } else {
+      return this.storage.find(data, callback)
+    }
   }
 
   create(data, callback) {

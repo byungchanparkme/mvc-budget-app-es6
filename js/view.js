@@ -1,6 +1,7 @@
 class View {
-  constructor(template) {
+  constructor(template, chart) {
     this.template = template
+    this.chart = chart
 
     this.balanceEl = document.querySelector(".balance .value")
     this.incomeTotalEl = document.querySelector(".income-total")
@@ -25,61 +26,38 @@ class View {
   }
 
   bind(event, handler) {
-    if (handler) {
-      if (event === "addExpenseItem") {
-        this.addExpenseBtn.addEventListener("click", () => {
+    this.dashBoard.addEventListener("click", (evt) => {
+      const target = evt.target
+      if (event === "moveToOtherTab") {
+        this._moveToOtherTab(target)
+      } else if (event === "addExpenseItem") {
+        if (target.parentElement.className === "add-expense") {
+          console.log("addExpenseBtn called")
           const title = this.expenseTitle.value
           const amount = this.expenseAmount.value
           handler({ type: "expense", title: title, amount: amount })
-        })
+        }
       } else if (event === "addIncomeItem") {
-        this.addIncomeBtn.addEventListener("click", () => {
+        if (target.parentElement.className === "add-income") {
+          console.log("addIncomeBtn called")
           const title = this.incomeTitle.value
           const amount = this.incomeAmount.value
           handler({ type: "income", title: title, amount: amount })
-        })
+        }
       } else if (event === "deleteItem") {
-        this.dashBoard.addEventListener("click", () => {
-          const listContainerList = [this.expenseEl, this.incomeEl, this.allEl]
-          listContainerList.forEach((listContainer) => {
-            if (!listContainer.classList.contains("hide")) {
-              const list = listContainer.children[0]
-              list.addEventListener("click", (event) => {
-                const target = event.target
-                if (target.id === "delete") {
-                  console.log("deleted")
-                  const targetId = parseInt(target.parentElement.id, 10)
-                  handler({ id: targetId })
-                }
-              })
-              return
-            }
-          })
-        })
+        if (target.id === "delete") {
+          const targetId = parseInt(target.parentElement.id, 10)
+          console.log(targetId)
+          handler({ id: targetId })
+        }
+      } else if (event === "editItem") {
+        if (target.id === "edit") {
+          console.log("edit button called")
+          const targetId = parseInt(target.parentElement.id, 10)
+          handler({ id: targetId })
+        }
       }
-    } else {
-      if (event === "moveToOtherTab") {
-        this.tabList.addEventListener("click", (event) => {
-          const target = event.target
-          if (target.classList.contains("tab1")) {
-            this._active(this.expenseBtn)
-            this._inactive([this.incomeBtn, this.allBtn])
-            this._show(this.expenseEl)
-            this._hide([this.incomeEl, this.allEl])
-          } else if (target.classList.contains("tab2")) {
-            this._active(this.incomeBtn)
-            this._inactive([this.expenseBtn, this.allBtn])
-            this._show(this.incomeEl)
-            this._hide([this.expenseEl, this.allEl])
-          } else if (target.classList.contains("tab3")) {
-            this._active(this.allBtn)
-            this._inactive([this.expenseBtn, this.incomeBtn])
-            this._show(this.allEl)
-            this._hide([this.expenseEl, this.incomeEl])
-          }
-        })
-      }
-    }
+    })
   }
 
   render(viewCmd, data) {
@@ -95,6 +73,12 @@ class View {
       },
       deleteItem: () => {
         this._deleteItem(data)
+      },
+      editItem: () => {
+        this._editItem(data)
+      },
+      displayChart: () => {
+        this._displayChart()
       },
     }
     viewCommands[viewCmd]()
@@ -112,6 +96,26 @@ class View {
   _inactive(elements) {
     elements.forEach((element) => element.classList.remove("active"))
   }
+
+  _moveToOtherTab(target) {
+    if (target.classList.contains("tab1")) {
+      this._active(this.expenseBtn)
+      this._inactive([this.incomeBtn, this.allBtn])
+      this._show(this.expenseEl)
+      this._hide([this.incomeEl, this.allEl])
+    } else if (target.classList.contains("tab2")) {
+      this._active(this.incomeBtn)
+      this._inactive([this.expenseBtn, this.allBtn])
+      this._show(this.incomeEl)
+      this._hide([this.expenseEl, this.allEl])
+    } else if (target.classList.contains("tab3")) {
+      this._active(this.allBtn)
+      this._inactive([this.expenseBtn, this.incomeBtn])
+      this._show(this.allEl)
+      this._hide([this.expenseEl, this.incomeEl])
+    }
+  }
+
   _showEntries(data) {
     this.expenseList.innerHTML = ""
     this.incomeList.innerHTML = ""
@@ -164,8 +168,6 @@ class View {
     }
   }
   _findTargetItem(elemList, data) {
-    console.log("elemList : ", elemList)
-    console.log("data : ", data)
     const children = Array.from(elemList)
     let targetItem
     children.forEach((child) => {
@@ -182,9 +184,24 @@ class View {
     if (!amounts.length) return 0
     return amounts.reduce((a, b) => a + Number(b.amount), 0)
   }
+
   _calculateBalance(outcome, income) {
     return income - outcome
   }
+
+  _editItem(data) {
+    if (data.type === "expense") {
+      this.expenseTitle.value = data.title
+      this.expenseAmount.value = data.amount
+      this.expenseTitle.focus()
+    } else if (data.type === "income") {
+      this.incomeTitle.value = data.title
+      this.incomeAmount.value = data.amount
+      this.incomeTitle.focus()
+    }
+  }
+
+  _displayChart() {}
 }
 
 export default View
