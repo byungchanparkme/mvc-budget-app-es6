@@ -78,7 +78,7 @@ class View {
         this._editItem(data)
       },
       displayChart: () => {
-        this._displayChart()
+        this._displayChart(data)
       },
     }
     viewCommands[viewCmd]()
@@ -133,11 +133,12 @@ class View {
 
   _showCurrentStatus(data) {
     // 먼저 income 과 outcome 계산
-    const outcome = data.filter((item) => item.type === "expense")
-    const income = data.filter((item) => item.type === "income")
+    // const outcome = data.filter((item) => item.type === "expense")
+    // const income = data.filter((item) => item.type === "income")
 
-    const outcomeTotal = this._calculateTotal(outcome)
-    const incomeTotal = this._calculateTotal(income)
+    // const outcomeTotal = this._calculateTotal(outcome)
+    // const incomeTotal = this._calculateTotal(income)
+    const { outcomeTotal, incomeTotal } = this._calculateIncomeAndOutcome(data)
     const balance = this._calculateBalance(outcomeTotal, incomeTotal)
 
     this.balanceEl.textContent = balance < 0 ? `-$${-balance}` : `$${balance}`
@@ -180,6 +181,18 @@ class View {
     return targetItem
   }
 
+  _calculateIncomeAndOutcome(data) {
+    // 먼저 income 과 outcome 계산
+    if (!data.length) return { outcomeTotal: 0, incomeTotal: 0 }
+    const outcome = data.filter((item) => item.type === "expense")
+    const income = data.filter((item) => item.type === "income")
+
+    const outcomeTotal = this._calculateTotal(outcome)
+    const incomeTotal = this._calculateTotal(income)
+
+    return { outcomeTotal, incomeTotal }
+  }
+
   _calculateTotal(amounts) {
     if (!amounts.length) return 0
     return amounts.reduce((a, b) => a + Number(b.amount), 0)
@@ -201,7 +214,11 @@ class View {
     }
   }
 
-  _displayChart() {}
+  _displayChart(data) {
+    const { outcomeTotal, incomeTotal } = this._calculateIncomeAndOutcome(data)
+
+    this.chart.updateChart(incomeTotal, outcomeTotal)
+  }
 }
 
 export default View

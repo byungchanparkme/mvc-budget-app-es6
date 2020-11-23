@@ -24,6 +24,7 @@ class Controller {
       this.view.render("showEntries", data)
       // 여기서 Balance, Income, Outcome 값 렌더링 필요하다.
       this.view.render("showCurrentStatus", data)
+      this.view.render("displayChart", data)
     })
   }
 
@@ -46,6 +47,7 @@ class Controller {
       console.log(entries)
       this.view.render("deleteItem", targetItem)
       this.view.render("showCurrentStatus", entries)
+      this.view.render("displayChart", data)
     })
   }
 
